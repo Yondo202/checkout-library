@@ -13,7 +13,7 @@ module.exports = {
       center: true,
       padding: "1.5rem",
       screens: {
-        "xl": "1180px",
+        "xl": "1080px",
       },
     },
     extend: {
@@ -87,10 +87,24 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "slide-right-to-left": {
+          from: { transform:'translateX(50px)' },
+          to: { transform:'translateX(0px)'},
+        },
+        "zero-to-height": {
+          from: { height:'0rem' },
+          to: { height:'5.3rem' },
+        },
+        "slide-right-to-left": {
+          from: { transform:'translateX(50px)' },
+          to: { transform:'translateX(0px)'},
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "zero-to-height": "zero-to-height 0.2s ease-out",
+        "slide-right-to-left": "slide-right-to-left 0.4s ease-out",
       },
     },
   },

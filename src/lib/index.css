@@ -62,12 +62,12 @@
 
 @layer base {
   * {
-    @apply border-border font-inter text-sm;
+    @apply border-border font-inter text-sm font-normal;
   }
   body {
     @apply bg-background text-foreground;
   }
   .item-style{
-    @apply grid grid-cols-2 gap-3 p-4 py-6 border-b items-center
+    @apply grid grid-cols-2 gap-3 p-4 py-5 border-b items-center
   }
 }

@@ -1,12 +1,18 @@
 // import { Button } from "@/lib/ui";
 import DetailCard from "./DetailCard";
 import StarterSection from "./StarterSection";
+import SubStepSection from "./sub_steps";
 import Stepper, { type StepItems } from "../ui/Stepper";
+import { useEffect, useState } from "react";
+import { cn } from "../ui/utils";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // type CheckHomeProps = {
 //   hideButton?: boolean;
 // };
 
-const Items: StepItems[] = [
+const queryClient = new QueryClient();
+
+export const StepAssets: StepItems[] = [
   { title: "Transport", status: "wait" },
   { title: "Pickup", status: "wait" },
   { title: "Delivery", status: "wait" },
@@ -15,14 +21,39 @@ const Items: StepItems[] = [
 ];
 
 const CheckoutHome = () => {
+  const [mainStep, setMainStep] = useState<"starter" | "sub_steps">('starter');
+
+  const starterTrigger = () => {
+    setMainStep("sub_steps");
+  };
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("starter") ?? "{}")?.id) {
+      setMainStep("sub_steps");
+    }
+  }, []);
+
   return (
-    <div className="bg-background h-dvh w-full container mx-auto">
-      <Stepper items={Items} />
-      <div className="h-full grid grid-cols-2 gap-6 py-24">
-        <StarterSection />
-        <DetailCard />
+    <QueryClientProvider client={queryClient}>
+      <div
+        className={cn(
+          "bg-background w-full h-dvh grid grid-rows-[5.3rem_1fr] transition-all duration-150",
+          mainStep === "sub_steps" ? ` gap-8` : `gap-0`
+        )}
+      >
+        {mainStep === "sub_steps" ? <Stepper items={StepAssets} /> : <div />}
+        <div className="h-max grid grid-cols-2 gap-10 pb-1 container">
+          {mainStep === "sub_steps" ? (
+            <div className="pr-32">
+              <SubStepSection />
+            </div>
+          ) : (
+            <StarterSection starterTrigger={starterTrigger} />
+          )}
+          <DetailCard />
+        </div>
       </div>
-    </div>
+    </QueryClientProvider>
   );
 };
 
