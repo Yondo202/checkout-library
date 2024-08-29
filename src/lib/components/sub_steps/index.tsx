@@ -3,8 +3,9 @@ import { type StepItems } from "@/lib/ui/Stepper";
 import { ArrowLeft } from "lucide-react";
 import TransportInfo from "./TransportInfo";
 
-const index = () => {
+const index = ({ starterTrigger }: { starterTrigger: () => void }) => {
   const [steps] = useState<StepItems["title"]>("Transport");
+
   return (
     <div className="relative animate-slide-right-to-left">
       <div className="space-y-5">
@@ -18,7 +19,10 @@ const index = () => {
         <TransportInfo />
       </div>
 
-      <div className="absolute top-0 -left-12 w-8 h-8 border rounded-full flex items-center justify-center cursor-pointer hover:bg-secondary">
+      <div
+        onClick={() => (steps === "Transport" ? starterTrigger() : null)}
+        className="absolute top-0 -left-12 w-8 h-8 border rounded-full flex items-center justify-center cursor-pointer hover:bg-secondary"
+      >
         <ArrowLeft width={18} />
       </div>
     </div>

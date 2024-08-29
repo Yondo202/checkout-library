@@ -3,6 +3,7 @@ import { MoveRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { request } from "@/lib/utils/request";
 import { useEffect, useState } from "react";
+import { cn } from "../ui/utils";
 
 type TPricing = {
   title: string;
@@ -12,10 +13,11 @@ type TPricing = {
 
 export type TResSkull<T> = { id: number; attributes: T };
 
-type TResponse<TData> = { data?: TResSkull<TData>[] };
+export type TResponse<TData> = { data?: TResSkull<TData>[] };
 
 const StarterSection = ({ starterTrigger }: { starterTrigger: () => void }) => {
   const [value, setValue] = useState<TResSkull<TPricing>>();
+  const [isError, setIsError] = useState(false);
 
   const { data, isLoading } = useQuery<TResponse<TPricing>>({
     queryKey: ["starter-pricing"],
@@ -27,15 +29,15 @@ const StarterSection = ({ starterTrigger }: { starterTrigger: () => void }) => {
   });
 
   const setLocaleStorage = (localedata?: TResSkull<TPricing>) => {
-    localStorage.setItem("starter", JSON.stringify(localedata));
+    localStorage.setItem("starter", JSON.stringify(localedata ?? ""));
   };
 
   useEffect(() => {
     if (localStorage.getItem("starter") === (null && undefined && "string")) {
-      setValue(data?.data?.[0])
-      return
+      setValue(data?.data?.[0]);
+      return;
     }
-    setValue(JSON.parse(localStorage.getItem("starter") ?? "{}"))
+    setValue(JSON.parse(localStorage.getItem("starter") ?? "{}"));
   }, []);
 
   // const setDefault = () => {
@@ -47,6 +49,15 @@ const StarterSection = ({ starterTrigger }: { starterTrigger: () => void }) => {
   //     JSON.parse(localStorage.getItem("starter") ?? "{}")?.id?.toString() ?? ""
   //   );
   // };
+
+  const onSubmit = () => {
+    if (!value) {
+      setIsError(true)  
+      return
+    }
+    setLocaleStorage(value)
+    starterTrigger();
+  };
 
   return (
     <div className="border rounded-md p-7 space-y-5">
@@ -78,8 +89,12 @@ const StarterSection = ({ starterTrigger }: { starterTrigger: () => void }) => {
               (item) => item.id?.toString() === event
             );
             setValue(found);
+            setIsError(false);
           }}
-          className="space-y-3 py-2"
+          className={cn(
+            "space-y-3",
+            isError ? `border border-destructive/70` : ``
+          )}
         >
           {data?.data?.map((item, index) => {
             return (
@@ -99,8 +114,7 @@ const StarterSection = ({ starterTrigger }: { starterTrigger: () => void }) => {
                     {item.attributes?.title} price
                   </div>
                   <div className="text-xs font-light">
-                    Once the order is assigned to a carrier, onetime payment in
-                    full by using your credit card or. debit card will be
+                    {item.attributes.description}
                   </div>
                 </div>
                 <div className="text-xl font-semibold">
@@ -112,8 +126,10 @@ const StarterSection = ({ starterTrigger }: { starterTrigger: () => void }) => {
         </RadioGroup>
       )}
 
+      {isError && <span className="text-destructive">Please, choose one</span>}
+
       <Button
-        onClick={() => (starterTrigger(), setLocaleStorage(value))}
+        onClick={() => onSubmit()}
         size="lg"
         className="gap-3 w-full h-12"
       >

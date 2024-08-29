@@ -1,5 +1,3 @@
-import { type TResSkull } from "./StarterSection";
-
 const items = [
   { name: "Door to door" },
   { name: "Door to door" },

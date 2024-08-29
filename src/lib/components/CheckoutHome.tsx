@@ -20,11 +20,13 @@ export const StepAssets: StepItems[] = [
   { title: "Thank you", status: "wait" },
 ];
 
-const CheckoutHome = () => {
-  const [mainStep, setMainStep] = useState<"starter" | "sub_steps">('starter');
+type TInitial = "starter" | "sub_steps";
 
-  const starterTrigger = () => {
-    setMainStep("sub_steps");
+const CheckoutHome = () => {
+  const [mainStep, setMainStep] = useState<TInitial>("starter");
+
+  const starterTrigger = (type: TInitial) => {
+    setMainStep(type);
   };
 
   useEffect(() => {
@@ -45,10 +47,12 @@ const CheckoutHome = () => {
         <div className="h-max grid grid-cols-2 gap-10 pb-1 container">
           {mainStep === "sub_steps" ? (
             <div className="pr-32">
-              <SubStepSection />
+              <SubStepSection starterTrigger={() => starterTrigger("starter")} />
             </div>
           ) : (
-            <StarterSection starterTrigger={starterTrigger} />
+            <StarterSection
+              starterTrigger={() => starterTrigger("sub_steps")}
+            />
           )}
           <DetailCard />
         </div>
