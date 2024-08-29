@@ -1,18 +1,9 @@
-// import React from 'react'
-
 import { cn } from "./utils";
-
-// { title: "Pickup", status: "wait" },
-// { title: "Delivery", status: "wait" },
-// { title: "Book shipment", status: "wait" },
-// { title: "Thank you", status: "wait" },
-export type StepItems = {
-  title?: "Transport" | "Pickup" | "Delivery" | "Book shipment" | "Thank you";
-  status?: "wait" | "process" | "finsih"; // | 'error'
-};
+import { TStepItem } from "../components/CheckoutHome";
 
 type StepperProps = {
-  items: StepItems[];
+  items: TStepItem[];
+  // activeStep: TStepItem;
 };
 // animate-zero-to-height
 const Stepper = ({ items }: StepperProps) => {
@@ -29,7 +20,16 @@ const Stepper = ({ items }: StepperProps) => {
                   "flex flex-col space-y-2 max-w-48 last:bg-card last:relative last:z-20"
                 )}
               >
-                <button className="h-10 w-10 border border-dashed border-muted-foreground rounded-full font-semibold bg-card relative z-20">
+                <button
+                  className={cn(
+                    "h-10 w-10 border border-dashed border-muted-foreground rounded-full font-semibold bg-card relative z-20",
+                    item.status === "finish"
+                      ? `bg-primary text-primary-foreground`
+                      : item.status === "process"
+                      ? `bg-secondary text-text`
+                      : `text-muted-foreground`
+                  )}
+                >
                   0{index + 1}
                 </button>
                 <span className="text-xs">{item.title}</span>

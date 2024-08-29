@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { request } from "@/lib/utils/request";
 import { useEffect } from "react";
 import { TResSkull } from "../StarterSection";
+import { type TStepItem } from "../CheckoutHome";
 
 type TCRepresent = "Individual" | "Business";
 // type TDeliveryAddressDetails = 'individual' | 'business'
@@ -37,12 +38,18 @@ const validEmail = {
   },
 };
 
-const localeKey = "checkout-transport";
-
-const TransportInfo = ({}) => {
+const TransportInfo = ({
+  activeStep,
+  toNext,
+}: {
+  activeStep?: TStepItem;
+  toNext: () => void;
+}) => {
   const { control, handleSubmit, setValue, reset } = useForm<TTransportType>({
     defaultValues: initial,
   });
+
+  const localeKey = activeStep?.localKey ?? "";
 
   const savedId = JSON.parse(localStorage.getItem(localeKey) ?? "{}")?.id;
 
@@ -81,6 +88,7 @@ const TransportInfo = ({}) => {
       }),
     onSuccess: (resdata) => {
       localStorage.setItem(localeKey, JSON.stringify(resdata.data));
+      toNext();
     },
   });
 
