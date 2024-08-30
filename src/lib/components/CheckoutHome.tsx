@@ -3,6 +3,7 @@ import DetailCard from "./DetailCard";
 import StarterSection from "./StarterSection";
 import SubStepSection from "./sub_steps";
 import Stepper from "../ui/Stepper";
+import { Toaster } from 'sonner';
 import { useEffect, useState } from "react";
 import { cn } from "../ui/utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -10,7 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 export type TStepItem = {
-  title?: "Transport" | "Pickup" | "Delivery" | "Book shipment" | "Thank you";
+  title: "Transport" | "Pickup" | "Delivery" | "Book shipment" | "Thank you";
   status: "wait" | "process" | "finish"; // | 'error'
   localKey: string;
 };
@@ -46,6 +47,7 @@ const CheckoutHome = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Toaster richColors />
       <div
         className={cn(
           "bg-background w-full h-dvh grid grid-rows-[5.3rem_1fr] transition-all duration-150",

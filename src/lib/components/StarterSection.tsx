@@ -23,7 +23,7 @@ const StarterSection = ({ starterTrigger }: { starterTrigger: () => void }) => {
     queryKey: ["starter-pricing"],
     queryFn: () =>
       request({
-        mainUrl: `http://localhost:1337/api/pricings`,
+        mainUrl: `http://10.10.228.201:1337/api/pricings`,
         method: "get",
       }),
   });

@@ -26,7 +26,7 @@ const Stepper = ({ items }: StepperProps) => {
                     item.status === "finish"
                       ? `bg-primary text-primary-foreground`
                       : item.status === "process"
-                      ? `bg-secondary text-text`
+                      ? `bg-secondary text-text shadow-sm`
                       : `text-muted-foreground`
                   )}
                 >

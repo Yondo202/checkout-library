@@ -68,7 +68,7 @@ const TransportInfo = ({
     enabled: !!savedId,
     queryFn: () =>
       request({
-        mainUrl: `http://localhost:1337/api/checkouts/${savedId}`,
+        mainUrl: `http://10.10.228.201:1337/api/checkouts/${savedId}`,
         method: "get",
       }),
   });
@@ -82,7 +82,7 @@ const TransportInfo = ({
   const { mutate, isPending } = useMutation({
     mutationFn: (body: TTransportType) =>
       request<{ data: TResSkull<TTransportType> }>({
-        mainUrl: `http://localhost:1337/api/checkouts/${!!data ? savedId : ""}`,
+        mainUrl: `http://10.10.228.201:1337/api/checkouts/${!!data ? savedId : ""}`,
         filterBody: { data: body },
         method: !!data ? "put" : "post",
       }),

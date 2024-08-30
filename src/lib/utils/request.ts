@@ -2,6 +2,7 @@
 import axios from "axios";
 // import Notification from '@/utils/hooks/Notification';
 // import { queryClient } from '@/main'
+import { toast } from "sonner";
 
 export type TRequest<T> = {
   method?: "get" | "post" | "put" | "delete";
@@ -42,18 +43,15 @@ export const request = async <T>({
       data: body ?? filterBody ?? {},
       ...reqAsset,
     });
-    // if(method === "post"){
-    //    return response.data?.data
-    // }
+
+    if (method !== "get") {
+      toast.success("Request success");
+    }
     // return response.data.data;
     return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    //   if (err?.response?.data?.message) {
-    //      toast.error(err?.response?.data?.message)
-    //   } else {
-    //      toast.error('Хүсэлт амжилтгүй')
-    //   }
+    toast.error(err?.response?.data?.error?.message ?? "something went wrong");
     throw err;
   }
 };
